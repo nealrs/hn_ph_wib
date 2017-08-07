@@ -1,0 +1,108 @@
+{
+  "$jason": {
+    "head": {
+      "title": "Neal Procrastinates",
+      "description": "Top stories Hacker News and Product Hunt & War is Boring",
+      "icon": "http://nealshyam.com/app/hn.png",
+      "styles": {
+        "bold": {
+          "font": "HelveticaNeue-CondensedBold",
+          "size": "15"
+        },
+        "padded": {
+          "padding": "20"
+        },
+        "spaced":{
+          "spacing": "30"
+        },
+        "normal": {
+          "font": "HelveticaNeue",
+          "size": "12"
+        }
+      },
+      "actions": {
+        "$pull": {
+          "type": "$reload"
+        },
+        "$load": {
+          "type": "$network.request",
+          "options": {
+            "url": "https://hnphalexa.herokuapp.com/all",
+            "method": "GET",
+            "data_type": "json"
+          },
+          "success": {
+            "type": "$render"
+          },
+          "error": {
+            "type": "$util.alert",
+            "options": {
+              "title": "debug",
+              "description": "error getting data {{JSON.stringify($jason)}}"
+
+            }
+          }
+        }
+      },
+      "templates":{
+        "body":{
+          "header": {
+            "title": "HN + PH + WiB",
+            "style": {
+              "background": "#ffa500",
+              "color": "#ffffff",
+              "font": "AvenirNext-Bold",
+              "size": "14"
+            },
+            "menu": {
+              "text": "👋🏽 Neal",
+              "action": {
+               "type": "$href",
+               "options": {
+                  "url": "https://nealshyam.com",
+                  "view": "web"
+                }
+              }
+            }
+          },
+          "sections": [
+            {
+              "items": {
+                "{{#each $jason.stories}}": {
+                  "type": "horizontal",
+                  "href": {
+                    "url": "{{commentURL}}",
+                    "view": "web"
+                  },
+                  "style": {
+                    "spacing": "20",
+                    "padding": "10"
+                  },
+                  "components": [{
+                    "type": "image",
+                    "url": "{{thumbnail}}",
+                    "style": {
+                      "width": "48",
+                      "height": "48",
+                      "corner_radius": "4"
+                    }
+                  }, {
+                      "type": "horizontal",
+                      "components": [{
+                        "type": "label",
+                        "text": "{{title}}",
+                        "style": {
+                          "font": "HelveticaNeue",
+                          "size": "14"
+                        }
+                      }]
+                  }]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
